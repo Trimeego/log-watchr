@@ -40,7 +40,7 @@ db.open (err, db) ->
 
   app.get "/", (req, res) ->
     relativePath = "/"
-    res.render "default", { id:req.params[1], theme:"new", relativePath:relativePath, layout: 'layout' }
+    res.redirect "index.html"
 
 
   app.get "/api/:collection/:id?", (req, res) ->

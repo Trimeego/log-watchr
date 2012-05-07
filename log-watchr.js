@@ -57,12 +57,7 @@
     app.get("/", function(req, res) {
       var relativePath;
       relativePath = "/";
-      return res.render("default", {
-        id: req.params[1],
-        theme: "new",
-        relativePath: relativePath,
-        layout: 'layout'
-      });
+      return res.redirect("index.html");
     });
     app.get("/api/:collection/:id?", function(req, res) {
       var collectionName, o, options, query, test;
