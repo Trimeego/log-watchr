@@ -43,8 +43,9 @@
     var io, socket;
     socket = null;
     io = require("socket.io").listen(app);
-    return io.sockets.on('connection', function(socket) {
-      socket.on("logs", function(message) {
+    io.sockets.on('connection', function(s) {
+      socket = s;
+      return socket.on("logs", function(message) {
         console.log(message);
         if (socket) {
           return socket.broadcast.emit("logs", {
@@ -52,134 +53,134 @@
           });
         }
       });
-      app.get("/", function(req, res) {
-        var relativePath;
-        relativePath = "/";
-        return res.render("default", {
-          id: req.params[1],
-          theme: "new",
-          relativePath: relativePath,
-          layout: 'layout'
-        });
-      });
-      app.get("/api/:collection/:id?", function(req, res) {
-        var collectionName, o, options, query, test;
-        query = (req.query.query ? JSON.parse(req.query.query) : {});
-        if (req.params.id) {
-          query = {
-            _id: new BSON.ObjectID(req.params.id)
-          };
-        }
-        options = req.params.options || {};
-        test = ["limit", "sort", "fields", "skip", "hint", "explain", "snapshot", "timeout"];
-        for (o in req.query) {
-          if (test.indexOf(o) >= 0) {
-            options[o] = req.query[o];
-          }
-        }
-        collectionName = req.params.collection;
-        return db.collection(collectionName, function(err, collection) {
-          if (err) {
-            return res.send(err, 500);
-          } else {
-            return collection.find(query, options, function(err, cursor) {
-              if (err) {
-                return res.send(err, 500);
-              } else {
-                return cursor.toArray(function(err, docs) {
-                  if (err) {
-                    return res.send(err, 500);
-                  } else {
-                    if (req.params.id && docs.length > 0) {
-                      return res.send(docs[0], 200);
-                    } else {
-                      return res.send(docs, 200);
-                    }
-                  }
-                });
-              }
-            });
-          }
-        });
-      });
-      app.post("/api/:collection", function(req, res) {
-        var collectionName;
-        collectionName = req.params.collection;
-        return db.collection(collectionName, function(err, collection) {
-          if (err) {
-            console.log(err);
-            return res.send(err, 500);
-          } else {
-            return collection.insert(req.body, function(err, docs) {
-              if (err) {
-                console.log(err);
-                return res.send(err, 500);
-              } else {
-                socket.emit("logs", req.body);
-                return res.send(docs[0], 201);
-              }
-            });
-          }
-        });
-      });
-      app.put("/api/:collection/:id", function(req, res) {
-        var collectionName, spec;
-        collectionName = req.params.collection;
-        spec = {
-          _id: new BSON.ObjectID(req.params.id)
-        };
-        return db.collection(collectionName, function(err, collection) {
-          var prop, setSpec;
-          if (err) {
-            console.log(err);
-            return res.send(err, 500);
-          } else {
-            setSpec = {};
-            for (prop in req.body) {
-              if (prop !== "_id") {
-                setSpec[prop] = req.body[prop];
-              }
-            }
-            return collection.update(spec, {
-              $set: setSpec
-            }, {
-              safe: true
-            }, function(err, docs) {
-              if (err) {
-                console.log(err);
-                return res.send(err, 500);
-              } else {
-                return res.send(req.body, 200);
-              }
-            });
-          }
-        });
-      });
-      app["delete"]("/api/:collection/:id", function(req, res) {
-        var collectionName, spec;
-        collectionName = req.params.collection;
-        spec = {
-          _id: new BSON.ObjectID(req.params.id)
-        };
-        return db.collection(collectionName, function(err, collection) {
-          if (err) {
-            console.log(err);
-            return res.send(err, 500);
-          } else {
-            return collection.remove(spec, function(err, result) {
-              if (err) {
-                console.log(err);
-                return res.send(err, 500);
-              } else {
-                return res.send(result, 200);
-              }
-            });
-          }
-        });
-      });
-      console.log("Super Doc 2000 Server Started.");
-      return app.listen(8082);
     });
+    app.get("/", function(req, res) {
+      var relativePath;
+      relativePath = "/";
+      return res.render("default", {
+        id: req.params[1],
+        theme: "new",
+        relativePath: relativePath,
+        layout: 'layout'
+      });
+    });
+    app.get("/api/:collection/:id?", function(req, res) {
+      var collectionName, o, options, query, test;
+      query = (req.query.query ? JSON.parse(req.query.query) : {});
+      if (req.params.id) {
+        query = {
+          _id: new BSON.ObjectID(req.params.id)
+        };
+      }
+      options = req.params.options || {};
+      test = ["limit", "sort", "fields", "skip", "hint", "explain", "snapshot", "timeout"];
+      for (o in req.query) {
+        if (test.indexOf(o) >= 0) {
+          options[o] = req.query[o];
+        }
+      }
+      collectionName = req.params.collection;
+      return db.collection(collectionName, function(err, collection) {
+        if (err) {
+          return res.send(err, 500);
+        } else {
+          return collection.find(query, options, function(err, cursor) {
+            if (err) {
+              return res.send(err, 500);
+            } else {
+              return cursor.toArray(function(err, docs) {
+                if (err) {
+                  return res.send(err, 500);
+                } else {
+                  if (req.params.id && docs.length > 0) {
+                    return res.send(docs[0], 200);
+                  } else {
+                    return res.send(docs, 200);
+                  }
+                }
+              });
+            }
+          });
+        }
+      });
+    });
+    app.post("/api/:collection", function(req, res) {
+      var collectionName;
+      collectionName = req.params.collection;
+      return db.collection(collectionName, function(err, collection) {
+        if (err) {
+          console.log(err);
+          return res.send(err, 500);
+        } else {
+          return collection.insert(req.body, function(err, docs) {
+            if (err) {
+              console.log(err);
+              return res.send(err, 500);
+            } else {
+              socket.emit("logs", req.body === socket);
+              return res.send(docs[0], 201);
+            }
+          });
+        }
+      });
+    });
+    app.put("/api/:collection/:id", function(req, res) {
+      var collectionName, spec;
+      collectionName = req.params.collection;
+      spec = {
+        _id: new BSON.ObjectID(req.params.id)
+      };
+      return db.collection(collectionName, function(err, collection) {
+        var prop, setSpec;
+        if (err) {
+          console.log(err);
+          return res.send(err, 500);
+        } else {
+          setSpec = {};
+          for (prop in req.body) {
+            if (prop !== "_id") {
+              setSpec[prop] = req.body[prop];
+            }
+          }
+          return collection.update(spec, {
+            $set: setSpec
+          }, {
+            safe: true
+          }, function(err, docs) {
+            if (err) {
+              console.log(err);
+              return res.send(err, 500);
+            } else {
+              return res.send(req.body, 200);
+            }
+          });
+        }
+      });
+    });
+    app["delete"]("/api/:collection/:id", function(req, res) {
+      var collectionName, spec;
+      collectionName = req.params.collection;
+      spec = {
+        _id: new BSON.ObjectID(req.params.id)
+      };
+      return db.collection(collectionName, function(err, collection) {
+        if (err) {
+          console.log(err);
+          return res.send(err, 500);
+        } else {
+          return collection.remove(spec, function(err, result) {
+            if (err) {
+              console.log(err);
+              return res.send(err, 500);
+            } else {
+              return res.send(result, 200);
+            }
+          });
+        }
+      });
+    });
+    console.log("Super Doc 2000 Server Started.");
+    return app.listen(8082);
   });
 
 }).call(this);
