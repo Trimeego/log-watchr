@@ -2,6 +2,7 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
+    <script src="/javascript/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io.connect('http://watchr.labs.icggroupinc.com');
@@ -12,6 +13,30 @@
   </head>
   <body>
     Log Watchr
+
+    <script>
+      $(document).ready(function(){
+        var socket = io.connect('http://watchr.labs.icggroupinc.com');
+        socket.on('logs', function (data) {
+          console.log(data);
+            appDiv = '#' + data.application;
+            $appDiv = $(appDiv);
+            
+            console.log($appDiv);
+
+            if($appDiv.length === 0) {
+              $('body').append("<h2>" + data.application + "</h2><pre><div class=\"entry\" id=\"" + data.application + "\"></div></pre>");
+            }
+            $(appDiv).append("<div>" + data.message + "</div>");
+            $entries = $("div.entry", $(appDiv));
+            lines = $entries.length
+            for(var i=lines-1;i>50;i--){
+              $(appDiv).remove($entries[i]);
+            }
+        });
+
+      });
+    </script>
 
   </body>
 </html>
