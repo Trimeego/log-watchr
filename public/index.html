@@ -25,9 +25,9 @@
             console.log($appDiv);
 
             if($appDiv.length === 0) {
-              $('body').append("<h2>" + data.application + "</h2><pre><div class=\"entry\" id=\"" + data.application + "\"></div></pre>");
+              $('body').append("<h2>" + data.application + "</h2><pre><div style=\"height:400px; overflow:scroll;\" class=\"entry\" id=\"" + data.application + "\"></div></pre>");
             }
-            $(appDiv).append("<div>" + data.message + "</div>");
+            $(appDiv).prepend("<div>" + data.message + "</div>");
             $entries = $("div.entry", $(appDiv));
             lines = $entries.length
             for(var i=lines-1;i>50;i--){
