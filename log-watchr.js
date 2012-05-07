@@ -43,7 +43,7 @@
     var io;
     io = require("socket.io").listen(app);
     io.sockets.on('connection', function(s) {
-      return socket.join("log-watchr");
+      return s.join("log-watchr");
     });
     app.get("/", function(req, res) {
       var relativePath;

@@ -32,7 +32,7 @@ db.open (err, db) ->
 
   io = require("socket.io").listen(app)
   io.sockets.on 'connection', (s) ->
-    socket.join "log-watchr"
+    s.join "log-watchr"
     
 
   app.get "/", (req, res) ->
