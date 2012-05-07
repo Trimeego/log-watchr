@@ -91,13 +91,17 @@ try
                 $string = [System.Text.Encoding]::ASCII.GetString($buffer, 0, $buffer.Length)
                 #Write-Host $string -NoNewline
                 $string = $string.trim()
-                try{
-                  PostLog $LogChannel $string
-                }
-                catch {
-                  sWrite-Host "posr error"
-                }
-                                    
+                $lines = $string.split("`n");
+                echo $lines
+                foreach ($l in $lines)
+                {
+                    try{
+                      PostLog $LogChannel $l.trim()
+                    }
+                    catch {
+                      Write-Host "post error"
+                    }
+                }                    
                 $oldLength += $numRead
             }
             Start-Sleep -Milliseconds 300
