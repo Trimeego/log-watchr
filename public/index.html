@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io.connect('http://localhost:8082');
+      var socket = io.connect('http://watchr.labs.icggroupinc.com');
       socket.on('logs', function (data) {
         console.log(data);
       });
