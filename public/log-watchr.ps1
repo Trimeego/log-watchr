@@ -94,6 +94,9 @@ try
                 try{
                   PostLog $LogChannel $string
                 }
+                catch {
+                  sWrite-Host "posr error"
+                }
                                     
                 $oldLength += $numRead
             }
