@@ -29,13 +29,10 @@ db = new Db("logWatcher", new Server(host, port, {}),
 )
 
 db.open (err, db) ->
-  socket = null
+
   io = require("socket.io").listen(app)
   io.sockets.on 'connection', (s) ->
-    socket = s
-    socket.on "logs", (message)->
-      console.log message
-      socket.broadcast.emit "logs", message:message if socket
+    socket.join "log-watchr"
     
 
   app.get "/", (req, res) ->
@@ -81,7 +78,8 @@ db.open (err, db) ->
             console.log err
             res.send err, 500
           else
-            socket.emit "logs", req.body if socket
+            io.sockets.in('log-watchr').emit("logs", req.body)
+            # socket.emit "logs", req.body if socket
             res.send docs[0], 201
             
 

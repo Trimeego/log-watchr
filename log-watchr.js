@@ -40,19 +40,10 @@
   });
 
   db.open(function(err, db) {
-    var io, socket;
-    socket = null;
+    var io;
     io = require("socket.io").listen(app);
     io.sockets.on('connection', function(s) {
-      socket = s;
-      return socket.on("logs", function(message) {
-        console.log(message);
-        if (socket) {
-          return socket.broadcast.emit("logs", {
-            message: message
-          });
-        }
-      });
+      return socket.join("log-watchr");
     });
     app.get("/", function(req, res) {
       var relativePath;
@@ -112,9 +103,7 @@
               console.log(err);
               return res.send(err, 500);
             } else {
-              if (socket) {
-                socket.emit("logs", req.body);
-              }
+              io.sockets["in"]('log-watchr').emit("logs", req.body);
               return res.send(docs[0], 201);
             }
           });
