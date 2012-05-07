@@ -40,7 +40,7 @@ db.open (err, db) ->
 
   app.get "/", (req, res) ->
     relativePath = "/"
-    res.redirect "index.html"
+    res.redirect "/index.html"
 
 
   app.get "/api/:collection/:id?", (req, res) ->
