@@ -81,7 +81,7 @@ db.open (err, db) ->
             console.log err
             res.send err, 500
           else
-            socket.emit "logs", req.body is socket
+            socket.emit "logs", req.body if socket
             res.send docs[0], 201
             
 

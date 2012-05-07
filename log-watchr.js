@@ -112,7 +112,9 @@
               console.log(err);
               return res.send(err, 500);
             } else {
-              socket.emit("logs", req.body === socket);
+              if (socket) {
+                socket.emit("logs", req.body);
+              }
               return res.send(docs[0], 201);
             }
           });
