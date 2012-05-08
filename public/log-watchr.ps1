@@ -1,4 +1,4 @@
-param($FilePath,$LogChannel)
+param($FilePath,$LogChannel,$Excludes)
 
 Function PostLog ($app, $message)
 {
@@ -93,7 +93,11 @@ try
                 foreach ($l in $lines)
                 {
                     try{
-                      PostLog $LogChannel $l.trim()
+                      $l = $l.trim()
+                      if(($Excludes -eq $null) -or (!($l -match $Excludes))) {
+                        PostLog $LogChannel $l
+                      }
+                      
                     }
                     catch {
                       Write-Host "post error"
