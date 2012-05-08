@@ -34,13 +34,14 @@
               $appDiv = $("<div class=\"log-entries\" id=\"" + data.application + "\"></div>")
               $pre.append($appDiv)
               $title.click(function(){
-                var height = $appDiv.height();
+                $targetDiv = $('#' + data.application);
+                var height = $targetDiv.height();
                 if(height < 200){
-                  $appDiv.height(400);
+                  $targetDiv.height(400);
                 }
                 else
                 {
-                  $appDiv.height(45);
+                  $targetDiv.height(45);
                 }
               });
             }
