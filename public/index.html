@@ -5,12 +5,6 @@
     <link href='css/watchr.css' rel='stylesheet'>
     <script src="/javascript/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-      var socket = io.connect('http://watchr.labs.icggroupinc.com');
-      socket.on('logs', function (data) {
-        console.log(data);
-      });
-    </script>
   </head>
   <body>
     <h1>Log Watchr</h1>
