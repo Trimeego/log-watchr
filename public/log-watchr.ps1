@@ -35,6 +35,7 @@ if ($PathIntrinsics.IsProviderQualified($FilePath))
 
 Write-Verbose "Tail-Content processing $FilePath"
 
+Write-Host "Initializing..."
 try 
 {        
     $output = New-Object "System.Text.StringBuilder"
@@ -70,11 +71,7 @@ try
             continue
         }
     }
-                
-    # Remove beginning line terminator
-    $output = $output.ToString().TrimStart([char[]]$Newline)
-    Write-Host $output -NoNewline
-    
+    Write-Host "Watching..."
     if ($Wait)
     {            
         # Now push pointer to end of file 
