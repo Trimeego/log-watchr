@@ -63,21 +63,24 @@ db.open (err, db) ->
                   res.send docs, 200
 
 
-  app.post "/api/:collection", (req, res) ->
+  app.post "/api/:collection?", (req, res) ->
     collectionName = req.params.collection
-    db.collection collectionName, (err, collection) ->
-      if err
-        console.log err
-        res.send err, 500
-      else
-        collection.insert req.body, (err, docs) ->
-          if err
-            console.log err
-            res.send err, 500
-          else
-            io.sockets.in('log-watchr').emit("logs", req.body)
-            # socket.emit "logs", req.body if socket
-            res.send docs[0], 201
+    if req.query.nodb
+      io.sockets.in('log-watchr').emit("logs", req.body)
+    else  
+      db.collection collectionName, (err, collection) ->
+        if err
+          console.log err
+          res.send err, 500
+        else
+          collection.insert req.body, (err, docs) ->
+            if err
+              console.log err
+              res.send err, 500
+            else
+              # socket.emit "logs", req.body if socket
+              io.sockets.in('log-watchr').emit("logs", req.body)
+              res.send docs[0], 201
             
 
   app.put "/api/:collection/:id", (req, res) ->

@@ -2,7 +2,7 @@ param($FilePath,$LogChannel,$Excludes)
 
 Function PostLog ($app, $message)
 {
-  $url = "http://watchr.labs.icggroupinc.com/api/logs"
+  $url = "http://watchr.labs.icggroupinc.com/api/logs?nodb=true"
   $message = $message.Replace("'", "|").Replace("`"", "|")
 
   $command = '{"application": "' + $app + '", "message": "' + $message + '"}'

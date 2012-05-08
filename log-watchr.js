@@ -90,25 +90,29 @@
         }
       });
     });
-    app.post("/api/:collection", function(req, res) {
+    app.post("/api/:collection?", function(req, res) {
       var collectionName;
       collectionName = req.params.collection;
-      return db.collection(collectionName, function(err, collection) {
-        if (err) {
-          console.log(err);
-          return res.send(err, 500);
-        } else {
-          return collection.insert(req.body, function(err, docs) {
-            if (err) {
-              console.log(err);
-              return res.send(err, 500);
-            } else {
-              io.sockets["in"]('log-watchr').emit("logs", req.body);
-              return res.send(docs[0], 201);
-            }
-          });
-        }
-      });
+      if (req.query.nodb) {
+        return io.sockets["in"]('log-watchr').emit("logs", req.body);
+      } else {
+        return db.collection(collectionName, function(err, collection) {
+          if (err) {
+            console.log(err);
+            return res.send(err, 500);
+          } else {
+            return collection.insert(req.body, function(err, docs) {
+              if (err) {
+                console.log(err);
+                return res.send(err, 500);
+              } else {
+                io.sockets["in"]('log-watchr').emit("logs", req.body);
+                return res.send(docs[0], 201);
+              }
+            });
+          }
+        });
+      }
     });
     app.put("/api/:collection/:id", function(req, res) {
       var collectionName, spec;
