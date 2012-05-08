@@ -26,9 +26,27 @@
             console.log($appDiv);
 
             if($appDiv.length === 0) {
-              $('body').append("<h2>" + data.application + "</h2><pre><div class=\"log-entries\" id=\"" + data.application + "\"></div></pre>");
+              $body = $('body')
+              $title = $("<h2>" + data.application + "</h2>");
+              $body.append($title)
+              $pre = $("<pre></pre>")
+              $body.append($pre);
+              $appDiv = $("<div class=\"log-entries\" id=\"" + data.application + "\"></div>")
+              $pre.append($appDiv)
+              $title.click(function(){
+                var height = $appDiv.height();
+                if(height < 200){
+                  $appDiv.height(400);
+                }
+                else
+                {
+                  $appDiv.height(45);
+                }
+              });
             }
             $(appDiv).prepend("<div>" + data.message + "</div>");
+
+
             // $entries = $("div.entry", $(appDiv));
             // lines = $entries.length
             // for(var i=lines-1;i>50;i--){
