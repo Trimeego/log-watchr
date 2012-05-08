@@ -19,17 +19,14 @@
       $(document).ready(function(){
         var socket = io.connect('http://watchr.labs.icggroupinc.com');
         socket.on('logs', function (data) {
-          console.log(data);
-            appDiv = '#' + data.application;
-            $appDiv = $(appDiv);
-            
-            console.log($appDiv);
+            var appDiv = '#' + data.application;
+            var $appDiv = $(appDiv);
 
             if($appDiv.length === 0) {
-              $body = $('body')
-              $title = $("<h2>" + data.application + "</h2>");
+              var $body = $('body')
+              var $title = $("<h2>" + data.application + "</h2>");
               $body.append($title)
-              $pre = $("<pre></pre>")
+              var $pre = $("<pre></pre>")
               $body.append($pre);
               $appDiv = $("<div class=\"log-entries\" id=\"" + data.application + "\"></div>")
               $pre.append($appDiv)
@@ -45,8 +42,8 @@
         });
 
         $('h2').click(function(event){
-          console.log event
-          $targetDiv = $(event.currentTarget);
+          console.log(event);
+          var $targetDiv = $(event.currentTarget);
           var height = $targetDiv.height();
           if(height < 200){
             $targetDiv.height(400);
