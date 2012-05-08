@@ -1,8 +1,5 @@
 express = require("express")
 http = require("http")
-# coffee = require("coffee-script")
-# _ = require("underscore")
-# jade = require('jade')
 Db = require("mongodb").Db
 GridStore = require("mongodb").GridStore
 ObjectID = require("mongodb").ObjectID
@@ -122,5 +119,5 @@ db.open (err, db) ->
 
 
 
-  console.log "Super Doc 2000 Server Started."
+  console.log "Log Watchr Server Started."
   app.listen 8082

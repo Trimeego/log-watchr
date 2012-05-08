@@ -165,7 +165,7 @@
         }
       });
     });
-    console.log("Super Doc 2000 Server Started.");
+    console.log("Log Watchr Server Started.");
     return app.listen(8082);
   });
 
