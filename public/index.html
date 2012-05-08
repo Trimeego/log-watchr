@@ -2,6 +2,7 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8'>
+    <link href='css/watchr.css' rel='stylesheet'>
     <script src="/javascript/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -12,7 +13,7 @@
     </script>
   </head>
   <body>
-    Log Watchr
+    <h1>Log Watchr</h1>
 
     <script>
       $(document).ready(function(){
@@ -25,7 +26,7 @@
             console.log($appDiv);
 
             if($appDiv.length === 0) {
-              $('body').append("<h2>" + data.application + "</h2><pre><div style=\"height:400px; overflow:scroll;\" class=\"entry\" id=\"" + data.application + "\"></div></pre>");
+              $('body').append("<h2>" + data.application + "</h2><pre><div class=\"log-entries\" id=\"" + data.application + "\"></div></pre>");
             }
             $(appDiv).prepend("<div>" + data.message + "</div>");
             // $entries = $("div.entry", $(appDiv));
