@@ -26,6 +26,11 @@
               $pre.append($appDiv)
             }
             $(appDiv).prepend("<div>" + data.message + "</div>");
+            var $children = $(appDiv).children();
+            if($children.length>250){
+              for(var oc = 250; oc>250; oc--)
+              $(appDiv).remove($children[oc])
+            } 
 
 
             // $entries = $("div.entry", $(appDiv));
