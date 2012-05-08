@@ -18,7 +18,7 @@
 
             if($appDiv.length === 0) {
               var $body = $('body')
-              var $title = $("<h2 class=\"title\">" + data.application + "</h2>");
+              var $title = $("<h2 class=\"title\" data-rel=\"" + data.application + "\">" + data.application + "</h2>");
               $body.append($title)
               var $pre = $("<pre></pre>")
               $body.append($pre);
@@ -37,7 +37,10 @@
 
         $('.title').live("click", function(event){
           console.log(event);
-          var $targetDiv = $(event.currentTarget);
+          var $link = $(event.currentTarget);
+          var divID = $link.attr("data-rel")
+          var $targetDiv = $("#" + divID);
+
           var height = $targetDiv.height();
           if(height < 200){
             $targetDiv.height(400);
