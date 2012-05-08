@@ -18,7 +18,7 @@
 
             if($appDiv.length === 0) {
               var $body = $('body')
-              var $title = $("<h2>" + data.application + "</h2>");
+              var $title = $("<h2 class=\"title\">" + data.application + "</h2>");
               $body.append($title)
               var $pre = $("<pre></pre>")
               $body.append($pre);
@@ -35,7 +35,7 @@
             // }
         });
 
-        $('h2').click(function(event){
+        $('.title').live("click", function(event){
           console.log(event);
           var $targetDiv = $(event.currentTarget);
           var height = $targetDiv.height();
