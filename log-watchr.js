@@ -94,7 +94,8 @@
       var collectionName;
       collectionName = req.params.collection;
       if (req.query.nodb) {
-        return io.sockets["in"]('log-watchr').emit("logs", req.body);
+        io.sockets["in"]('log-watchr').emit("logs", req.body);
+        return res.send(req.body, 201);
       } else {
         return db.collection(collectionName, function(err, collection) {
           if (err) {

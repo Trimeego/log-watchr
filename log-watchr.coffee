@@ -67,6 +67,7 @@ db.open (err, db) ->
     collectionName = req.params.collection
     if req.query.nodb
       io.sockets.in('log-watchr').emit("logs", req.body)
+      res.send req.body, 201
     else  
       db.collection collectionName, (err, collection) ->
         if err
